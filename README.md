@@ -29,5 +29,6 @@ Este escáner identifica cámaras de vigilancia IP que están accesibles sin aut
 
 1. Clona el repositorio:
    ```bash
-   git clone https://github.com/tuusuario/stealth-camera-scanner.git
-   cd stealth-camera-scanner
+   git clone https://github.com/tuusuario/camera_scanner_with_nmap.git
+   cd camera_scanner_with_nmap
+
