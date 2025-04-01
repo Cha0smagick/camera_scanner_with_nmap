@@ -285,6 +285,7 @@ class EnhancedCameraScanner:
         # Verificar cámaras en puertos abiertos
         if open_ports:
             print(f"[+] {len(open_ports)} puertos abiertos encontrados en {network}")
+            cameras_found = 0
             with ThreadPoolExecutor(max_workers=self.threads) as executor:
                 futures = []
                 for ip, port in open_ports:
@@ -296,8 +297,13 @@ class EnhancedCameraScanner:
                     if is_camera and access_url:
                         self.open_cameras.append((ip, port, access_url))
                         print(f"\n[!] Cámara encontrada: {access_url}")
+                        cameras_found += 1
+            
+            # Mensaje específico cuando hay puertos abiertos pero no son cámaras
+            if cameras_found == 0:
+                print(f"\n[i] No se encontraron cámaras accesibles en {network} (aunque se detectaron {len(open_ports)} puertos abiertos)")
         else:
-            print(f"[-] No se encontraron puertos abiertos en {network}")
+            print(f"\n[-] No se encontraron puertos abiertos en {network} (ningún dispositivo respondió en los puertos comunes de cámaras)")
 
     def scan_random_ips(self, count=1000):
         """Escanea un conjunto de IPs aleatorias"""
@@ -319,6 +325,7 @@ class EnhancedCameraScanner:
         # Verificar cámaras en puertos abiertos
         if open_ports:
             print(f"[+] {len(open_ports)} puertos abiertos encontrados en IPs aleatorias")
+            cameras_found = 0
             with ThreadPoolExecutor(max_workers=self.threads) as executor:
                 futures = []
                 for ip, port in open_ports:
@@ -330,8 +337,12 @@ class EnhancedCameraScanner:
                     if is_camera and access_url:
                         self.open_cameras.append((ip, port, access_url))
                         print(f"\n[!] Cámara encontrada: {access_url}")
+                        cameras_found += 1
+            
+            if cameras_found == 0:
+                print(f"\n[i] No se encontraron cámaras accesibles en las IPs aleatorias (aunque se detectaron {len(open_ports)} puertos abiertos)")
         else:
-            print("[-] No se encontraron puertos abiertos en las IPs aleatorias")
+            print("\n[-] No se encontraron puertos abiertos en las IPs aleatorias")
 
     def display_results(self):
         """Muestra los resultados del escaneo"""
